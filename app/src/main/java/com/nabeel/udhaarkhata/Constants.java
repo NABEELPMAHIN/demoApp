@@ -3,7 +3,7 @@ package com.nabeel.udhaarkhata;
 public class Constants {
 
     public static final String BASE_URL = "http://localhost.com/";
-    public static final String STAGING_BASE_URL = "http://127.0.0.1/";
+    public static final String STAGING_BASE_URL = "https://my-json-server.typicode.com/NABEELPMAHIN/server/";
 
     public static final String MyPREFERENCES = "MyPrefs";
     public static  String ACCESS_TOKEN = "Access Token";

@@ -4,27 +4,44 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.gms.auth.api.credentials.HintRequest
+import com.nabeel.udhaarkhata.response.DefaultResponse
 import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: LoginViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.nabeel.udhaarkhata.R.layout.activity_login)
 
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java!!)
         btnLogin.setOnClickListener {
             val phoneNo=phoneNum.text.toString();
             //Toast.makeText(applicationContext,phoneNo,Toast.LENGTH_LONG).show();
             if (phoneNo.length<10)
                 phoneNum.error="Invalid Phone Number"
             else
-                startActivity(Intent(this,OTPActivity::class.java).putExtra("phoneNo",phoneNo))
+                viewModel.getOTP(applicationContext,phoneNo)
+
         }
         requestHint();
+
+
+
+        viewModel.otpResponse.observe(this, Observer<DefaultResponse>{
+
+            if (it.status.equals("Success"))
+            {
+                startActivity(Intent(this,OTPActivity::class.java).putExtra("phoneNo",phoneNum.text.toString()))
+            }
+
+        })
     }
 
     private val CREDENTIAL_PICKER_REQUEST = 1  // Set to an unused request code
